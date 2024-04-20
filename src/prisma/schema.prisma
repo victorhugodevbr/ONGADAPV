@@ -1,0 +1,200 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "darwin", "darwin-arm64", "linux-musl", "debian-openssl-1.1.x", "darwin"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model tb_endereco {
+  end_id Int @id @default(autoincrement())
+  end_cep String
+  end_rua String
+  end_bairro String
+  end_numero Int
+  end_cidade String
+  end_estado String
+  end_complemento String
+  pess_id Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tb_pessoa tb_pessoa @relation(fields: [pess_id], references: [pess_id])
+}
+
+model tb_pessoa {
+  pess_id Int @id @default(autoincrement())
+  pess_nome String
+  pess_cpf String @unique
+  pess_rg String @unique
+  pess_nasc DateTime
+  pess_nacion String
+  pess_genero String
+  pess_tel String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tb_endereco tb_endereco[]
+  tb_voluntarios tb_voluntarios[]
+  tb_adocao tb_adocao[]
+  tb_doacoes tb_doacoes[]
+}
+
+model tb_voluntarios {
+  vol_id Int @id @default(autoincrement())
+  pess_id Int @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tb_pessoa tb_pessoa @relation(fields: [pess_id], references: [pess_id])
+  tb_atividades tb_atividades[]
+}
+
+model tb_animais {
+  ani_id Int @id @default(autoincrement())
+  ani_nome String
+  ani_nascimento String
+  ani_raca String
+  ani_sexo String
+  ani_especie String
+  ani_pelagem String
+  ani_ester String
+  ani_estado String
+  ani_disponivel String
+  ani_descricao String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tb_adocao tb_adocao[]
+}
+
+model tb_adocao {
+  ado_id Int @id @default(autoincrement())
+  pess_id Int
+  ani_id Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tb_pessoa tb_pessoa @relation(fields: [pess_id], references: [pess_id])
+  tb_animais tb_animais @relation(fields: [ani_id], references: [ani_id])
+}
+
+model tb_empresas {
+  emp_id Int @id @default(autoincrement())
+  emp_nome String
+  emp_cnpj String
+  emp_cep String
+  emp_num Int
+  emp_cidade String
+  emp_estado String
+  emp_rua String
+  emp_bairro String
+  emp_complemento String
+  emp_telefone String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tb_atividades tb_atividades[]
+}
+
+model tb_atividades{
+  atv_id Int @id @default(autoincrement())
+  atv_nome String
+  atv_desc String
+  atv_data DateTime
+  vol_id Int
+  emp_id Int
+  pro_id Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tb_voluntarios tb_voluntarios @relation(fields: [vol_id], references: [vol_id])
+  tb_empresas tb_empresas @relation(fields: [emp_id], references: [emp_id])
+  tb_projetos tb_projetos @relation(fields: [pro_id], references: [pro_id])
+
+}
+
+model tb_projetos {
+  pro_id Int @id @default(autoincrement())
+  pro_nome String
+  pro_data DateTime
+  pro_desc String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tb_atividades tb_atividades[]
+}
+
+model tb_doacoes {
+  doa_id Int @id @default(autoincrement())
+  doa_tipo String
+  doa_desc String
+  doa_qnt Float
+  doa_doador String
+  doa_cpf_cnpj String
+  doa_rg String
+  doa_data DateTime
+  pess_id Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tb_pessoa tb_pessoa @relation(fields: [pess_id], references: [pess_id])
+  tb_estoque tb_estoque[]
+  tb_patrimonio tb_patrimonio[]
+}
+
+model tb_eventos {
+  even_id Int @id @default(autoincrement())
+  even_nome String
+  even_descricao String
+  even_local String
+  even_dataInicio DateTime
+  even_dataFinal DateTime
+  ctrlEven_id Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tb_ctrlSaidaEvento tb_ctrlSaidaEvento[]
+}
+
+model tb_ctrlSaidaEvento {
+  ctrlEven_id Int @id @default(autoincrement())
+  ctrlEven_desc String
+  ctrlEven_estado String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  prodSaida_id Int
+  prodSaida_qnt Int
+  prodEntrada_id Int
+  prodEntrada_qnt Int
+  even_id Int
+  tb_eventos tb_eventos @relation(fields: [even_id], references: [even_id])
+}
+
+model tb_produtos {
+  prod_id Int @id @default(autoincrement())
+  prod_nome String
+  prod_tipo String
+  prod_desc String
+  prod_qnt Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tb_estoque tb_estoque[]
+
+}
+
+model tb_estoque {
+  estoq_id Int @id @default(autoincrement())
+  prod_id Int
+  doa_id Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tb_doacoes tb_doacoes @relation(fields: [doa_id], references: [doa_id])
+  tb_produtos tb_produtos @relation(fields: [prod_id], references: [prod_id])
+
+}
+
+model tb_patrimonio {
+  patrim_id Int @id @default(autoincrement())
+  patrim_saldo Float
+  doa_id Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tb_doacoes tb_doacoes @relation(fields: [doa_id], references: [doa_id])
+
+}
