@@ -1,4 +1,4 @@
-# Rubcamp - MVC Boiterplate
+# ONGADAPV - MVC Boiterplate
 
 Para rodar o projeto, siga os passos:
 
@@ -11,7 +11,7 @@ Para Instalar o Make:
 A estrutura do projeto está organizado da seguinte maneira:
 
 ```
-rubcamp
+ongadapv
 │   README.md - Instruções de como rodar o projeto
 │   .env - Iremos guardar as variáveis de ambiente aqui
 │   .dockerignore - Arquivos que serão ignorados pelo Docker
