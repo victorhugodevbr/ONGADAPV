@@ -25,6 +25,7 @@ CREATE TABLE "tb_pessoa" (
     "pess_nacion" TEXT NOT NULL,
     "pess_genero" TEXT NOT NULL,
     "pess_tel" TEXT NOT NULL,
+    "pess_tipo" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

@@ -40,6 +40,7 @@ export enum Atributo {
     bairro = 'Bairro',
     cidade = 'Cidade',
     uf = 'UF',
+    tipoDePessoa = 'Tipo de Pessoa',
     contaBanc_senhatransacao = 'Senha Transacional',
     contaBanc_tipo = 'Tipo de conta',
     contaBanc_saldo = 'Saldo',

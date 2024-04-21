@@ -14,7 +14,8 @@ export default class PessoaModel {
         pess_nasc: pessoa.pess_nasc + "T00:00:00.000Z",
         pess_nacion: pessoa.pess_nacion,
         pess_genero: pessoa.pess_genero,
-        pess_tel: pessoa.pess_tel
+        pess_tel: pessoa.pess_tel,
+        pess_tipo: pessoa.pess_tipo
       }
     });
   }

@@ -9,18 +9,17 @@ const adicionaErros = new manipulaErros()
 export const validandoPessoaUpdate = (req: Request, res:Response, next: NextFunction) => {
     const pessoaSchema = Joi.object({
         pess_nome: Joi.string().regex(PessoaUtils.nomeRegex).required(),
-        pess_tel: Joi.string().regex(PessoaUtils.telRegex).required(),
-
         pess_nasc: Joi.custom((value, helpers) => {
-            if(!PessoaUtils.nascRegex.test(value)){
-                return helpers.error('erro digitacao')
-            }
-            if(!PessoaUtils.validarIdade(value)){
-                return helpers.error('menor de idade')
-            }
-            return value
-        }).required(), 
-        pess_id: Joi.number().required(),
+          if(!PessoaUtils.nascRegex.test(value)){
+              return helpers.error('erro digitacao')
+          }
+          return value
+      }).required(),
+        pess_nacion: Joi.string().regex(PessoaUtils.nacionRegex).required(),
+        pess_genero: Joi.string().regex(PessoaUtils.generoRegex).required(),
+        pess_tipo: Joi.string().regex(PessoaUtils.tipoRegex).required(),
+        pess_tel: Joi.string().regex(PessoaUtils.telRegex).required(),
+        // pess_id: Joi.number().required(),
     })
     adicionaErros.clearErros()
     const pessoa = req.body;
@@ -73,6 +72,8 @@ export const validandoPessoa = (req: Request, res:Response, next: NextFunction) 
         }).required(), 
         pess_tel: Joi.string().regex(PessoaUtils.telRegex).required(),
         pess_genero: Joi.string().regex(PessoaUtils.generoRegex).required(),
+        pess_tipo: Joi.string().regex(PessoaUtils.tipoRegex).required(),
+
         
     })
     adicionaErros.clearErros()
@@ -101,6 +102,9 @@ export const validandoPessoa = (req: Request, res:Response, next: NextFunction) 
                 }
             if(objUsuario.path.includes('pess_tel')){
               adicionaErros.adicionaErro(Tabela.Pessoa, Atributo.telefone, HTTP_Codes.BadRequest, '')
+              }
+            if(objUsuario.path.includes('pess_tipo')){
+              adicionaErros.adicionaErro(Tabela.Pessoa, Atributo.tipoDePessoa, HTTP_Codes.BadRequest, '')
               }
         })
         const listaErros = adicionaErros.getErros()
